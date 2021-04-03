@@ -1,0 +1,11 @@
+{
+  "debug.console.wordWrap": false,
+  "eslint.alwaysShowStatus": true,
+  "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+  "[javascript]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
+  "eslint.lintTask.enable": true,
+  "eslint.format.enable": true,
+  "editor.formatOnSave": true
+}
