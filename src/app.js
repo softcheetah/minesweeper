@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-one-expression-per-line */
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { Field } from "src/components";
 import { mines, width } from "src/config";
 import { generateFields, generateInitStates, spreadSelection } from "src/utility";
@@ -13,28 +13,42 @@ const App = () => {
   const [states, setStates] = useState(
     generateInitStates()
   );
-  const [finished, setFinished] = useState(false);
+  const [startedTime, setStartedTime] = useState(0);
+  const [finishedTime, setFinishedTime] = useState(0);
+  const [currentTime, setCurrentTime] = useState(0);
+
+  useEffect(() => {
+    setInterval(
+      () => setCurrentTime(Date.now()),
+      1000
+    );
+  }, []);
 
   const handleRestart = () => {
     setFields(generateFields());
     setStates(generateInitStates());
-    setFinished(false);
+    setStartedTime(0);
+    setFinishedTime(0);
   };
 
   const handleLeftClick = (clickedIndex) => {
-    if (finished || states[clickedIndex] !== STATE.INIT) {
+    if (finishedTime > 0 || states[clickedIndex] !== STATE.INIT) {
       return;
+    }
+
+    if (!startedTime) {
+      setStartedTime(Date.now());
     }
 
     spreadSelection(fields, states, clickedIndex);
     setStates([...states]);
 
     if (fields[clickedIndex] === -1) {
-      setFinished(true);
+      setFinishedTime(Date.now());
     }
   };
   const handleRightClick = (clickedIndex) => {
-    if (finished) return;
+    if (finishedTime > 0) return;
 
     if (states[clickedIndex] === STATE.INIT) {
       setStates(states.map((state, index) => (
@@ -48,11 +62,17 @@ const App = () => {
   };
 
   const leftMines = mines - states.filter(s => s === STATE.MINE).length;
+  const timeElapsed = startedTime === 0 ? 0 : (
+    Math.floor(
+      Math.max((finishedTime || currentTime) - startedTime, 0)
+      / 1000
+    )
+  );
 
   return (
     <div className="App">
       <div>
-        Left: { leftMines }
+        Left: { leftMines }, Time: { timeElapsed }
       </div>
       <br />
       <div className="fields-container" onContextMenu={e => e.preventDefault()}>
@@ -62,7 +82,7 @@ const App = () => {
             <Field
               field={field}
               state={states[index]}
-              finished={finished}
+              finished={finishedTime > 0}
               onLeftClick={() => handleLeftClick(index)}
               onRightClick={() => handleRightClick(index)}
             />
