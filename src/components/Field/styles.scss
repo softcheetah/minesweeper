@@ -5,6 +5,7 @@ $size: 16px;
   height: $size;
   display: inline-block;
   background-image: url('../../assets/sprite100.gif');
+  background-position: 0 -39px;
 
   &.finished {
     pointer-events: none;
