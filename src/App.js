@@ -4,6 +4,7 @@ import { Field } from "src/components";
 import { width, height } from "src/config";
 import { generateFields } from "src/utility";
 import { STATE } from "src/constant";
+import "./styles.scss";
 
 const App = () => {
   const [fields, setFields] = useState(generateFields());
@@ -16,12 +17,15 @@ const App = () => {
     <div className="App">
       <div className="fields-container">
         { fields.map((field, index) => (
-          <Field
-            key={index}
-            field={field}
-            state={states[index]}
-            finished={finished}
-          />
+          <>
+            <Field
+              key={index}
+              field={field}
+              state={states[index]}
+              finished={finished}
+            />
+            {index % width === width - 1 && <div />}
+          </>
         ))}
       </div>
     </div>
