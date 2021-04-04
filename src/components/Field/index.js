@@ -8,6 +8,7 @@ const Field = ({
 }) => {
   const classNames = ["field-div"];
   if (finished) {
+    // Game is finished
     if (state === STATE.INIT) {
       classNames.push(field >= 0 ? "not-touched" : "not-found-mine");
     }
@@ -18,6 +19,7 @@ const Field = ({
       classNames.push(field >= 0 ? "not-mine" : "marked-mine");
     }
   } else {
+    // Game is being played now
     if (state === STATE.INIT) {
       classNames.push("init");
     }

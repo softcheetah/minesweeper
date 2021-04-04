@@ -1,4 +1,6 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, {
+  Fragment, useCallback, useEffect, useMemo, useState
+} from "react";
 import { Field } from "src/components";
 import { mines, width } from "src/config";
 import {
@@ -8,12 +10,8 @@ import { STATE } from "src/constant";
 import "./styles.scss";
 
 const App = () => {
-  const [fields, setFields] = useState(
-    generateFields()
-  );
-  const [states, setStates] = useState(
-    generateInitStates()
-  );
+  const [fields, setFields] = useState(generateFields());
+  const [states, setStates] = useState(generateInitStates());
   const [startedTime, setStartedTime] = useState(0);
   const [finishedTime, setFinishedTime] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
@@ -25,14 +23,14 @@ const App = () => {
     );
   }, []);
 
-  const handleRestart = () => {
+  const handleRestart = useCallback(() => {
     setFields(generateFields());
     setStates(generateInitStates());
     setStartedTime(0);
     setFinishedTime(0);
-  };
+  }, []);
 
-  const handleLeftClick = (clickedIndex) => {
+  const handleLeftClick = useCallback((clickedIndex) => {
     if (finishedTime > 0 || states[clickedIndex] !== STATE.INIT) {
       return;
     }
@@ -47,8 +45,9 @@ const App = () => {
     if (checkFinished(fields, states)) {
       setFinishedTime(Date.now());
     }
-  };
-  const handleRightClick = (clickedIndex) => {
+  }, [fields, finishedTime, startedTime, states]);
+
+  const handleRightClick = useCallback((clickedIndex) => {
     if (finishedTime > 0 || states[clickedIndex] === STATE.CLEAR) {
       return;
     }
@@ -63,9 +62,14 @@ const App = () => {
     if (checkFinished(fields, states)) {
       setFinishedTime(Date.now());
     }
-  };
+  }, [fields, finishedTime, states]);
 
-  const leftMines = mines - states.filter(s => s === STATE.MINE).length;
+  const leftMines = useMemo(
+    () => mines - states.filter(s => s === STATE.MINE).length,
+    [states]
+  );
+
+  // Not expensive calcuation
   const timeElapsed = startedTime === 0 ? 0 : (
     Math.floor(
       Math.max((finishedTime || currentTime) - startedTime, 0)
