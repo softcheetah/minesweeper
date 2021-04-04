@@ -31,27 +31,33 @@ const App = () => {
   }, []);
 
   const handleLeftClick = useCallback((clickedIndex) => {
+    // If already finished or revealed or mine-marked
     if (finishedTime > 0 || states[clickedIndex] !== STATE.INIT) {
       return;
     }
 
+    // Set the time started
     if (!startedTime) {
       setStartedTime(Date.now());
     }
 
+    // Spread selection
     spreadSelection(fields, states, clickedIndex);
     setStates([...states]);
 
+    // Check finished
     if (checkFinished(fields, states)) {
       setFinishedTime(Date.now());
     }
   }, [fields, finishedTime, startedTime, states]);
 
   const handleRightClick = useCallback((clickedIndex) => {
+    // If already finished or revealed
     if (finishedTime > 0 || states[clickedIndex] === STATE.CLEAR) {
       return;
     }
 
+    // Revert status
     if (states[clickedIndex] === STATE.INIT) {
       states[clickedIndex] = STATE.MINE;
     } else {
@@ -59,6 +65,7 @@ const App = () => {
     }
     setStates([...states]);
 
+    // Check finished
     if (checkFinished(fields, states)) {
       setFinishedTime(Date.now());
     }
