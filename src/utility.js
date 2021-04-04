@@ -1,6 +1,7 @@
 import { STATE } from "src/constant";
 import { width, height, mines } from "./config";
 
+// Get 8 surroundings
 export const getSurroundings = (index) => {
   const surroundings = [];
   const x = index % width;
@@ -76,6 +77,7 @@ export const spreadSelection = (fields, states, index) => {
     return;
   }
 
+  // Spread selection to 8 surroundings
   getSurroundings(index).filter(
     sIndex => states[sIndex] === STATE.INIT
   ).forEach(
