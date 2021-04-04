@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { Fragment, useState } from "react";
 import { Field } from "src/components";
 import { width, height } from "src/config";
 import { generateFields } from "src/utility";
@@ -6,7 +6,7 @@ import { STATE } from "src/constant";
 import "./styles.scss";
 
 const App = () => {
-  const [fields, setFields] = useState(generateFields());
+  const [fields] = useState(generateFields());
   const [states, setStates] = useState(
     new Array(width * height).fill(STATE.INIT)
   );
@@ -42,9 +42,9 @@ const App = () => {
     <div className="App">
       <div className="fields-container" onContextMenu={e => e.preventDefault()}>
         { fields.map((field, index) => (
-          <>
+          // eslint-disable-next-line react/no-array-index-key
+          <Fragment key={index}>
             <Field
-              key={index}
               field={field}
               state={states[index]}
               finished={finished}
@@ -52,7 +52,7 @@ const App = () => {
               onRightClick={() => handleRightClick(index)}
             />
             {index % width === width - 1 && <br />}
-          </>
+          </Fragment>
         ))}
       </div>
     </div>
