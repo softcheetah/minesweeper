@@ -1,6 +1,7 @@
+/* eslint-disable react/jsx-one-expression-per-line */
 import React, { Fragment, useState } from "react";
 import { Field } from "src/components";
-import { width } from "src/config";
+import { mines, width } from "src/config";
 import { generateFields, generateInitStates, spreadSelection } from "src/utility";
 import { STATE } from "src/constant";
 import "./styles.scss";
@@ -46,8 +47,14 @@ const App = () => {
     }
   };
 
+  const leftMines = mines - states.filter(s => s === STATE.MINE).length;
+
   return (
     <div className="App">
+      <div>
+        Left: { leftMines }
+      </div>
+      <br />
       <div className="fields-container" onContextMenu={e => e.preventDefault()}>
         { fields.map((field, index) => (
           // eslint-disable-next-line react/no-array-index-key
