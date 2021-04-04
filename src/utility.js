@@ -1,3 +1,5 @@
+/* eslint-disable no-param-reassign */
+import { STATE } from "src/constant";
 import { width, height, mines } from "./config";
 
 export const getSurroundings = (index) => {
@@ -63,4 +65,17 @@ export const generateFields = () => {
     }
   }
   return fields;
+};
+
+export const spreadSelection = (fields, states, index) => {
+  states[index] = STATE.CLEAR;
+  if (fields[index] !== 0) {
+    return;
+  }
+
+  getSurroundings(index).filter(
+    sIndex => states[sIndex] === STATE.INIT
+  ).forEach(
+    sIndex => spreadSelection(fields, states, sIndex)
+  );
 };

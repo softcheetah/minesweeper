@@ -1,7 +1,7 @@
 import React, { Fragment, useState } from "react";
 import { Field } from "src/components";
 import { width, height } from "src/config";
-import { generateFields } from "src/utility";
+import { generateFields, spreadSelection } from "src/utility";
 import { STATE } from "src/constant";
 import "./styles.scss";
 
@@ -17,9 +17,9 @@ const App = () => {
       return;
     }
 
-    setStates(states.map((state, index) => (
-      index === clickedIndex ? STATE.CLEAR : state
-    )));
+    spreadSelection(fields, states, clickedIndex);
+    setStates([...states]);
+
     if (fields[clickedIndex] === -1) {
       setFinished(true);
     }
