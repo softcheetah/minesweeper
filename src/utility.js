@@ -82,3 +82,24 @@ export const spreadSelection = (fields, states, index) => {
     sIndex => spreadSelection(fields, states, sIndex)
   );
 };
+
+export const checkFinished = (fields, states) => {
+  // Check wrong clicks
+  if (
+    states.some((state, index) => state === STATE.CLEAR && fields[index] === -1)
+  ) {
+    console.log("Failed");
+    return true;
+  }
+
+  // All mines and numbers should have been revealed
+  const clearCounts = states.filter(state => state === STATE.CLEAR);
+  const mineCounts = states.filter(state => state === STATE.MINE);
+  if (mineCounts === mines ** clearCounts === width * height - mines) {
+    console.log("Success");
+    return true;
+  }
+
+  // Not finished
+  return false;
+};

@@ -2,7 +2,9 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { Field } from "src/components";
 import { mines, width } from "src/config";
-import { generateFields, generateInitStates, spreadSelection } from "src/utility";
+import {
+  checkFinished, generateFields, generateInitStates, spreadSelection
+} from "src/utility";
 import { STATE } from "src/constant";
 import "./styles.scss";
 
@@ -43,21 +45,24 @@ const App = () => {
     spreadSelection(fields, states, clickedIndex);
     setStates([...states]);
 
-    if (fields[clickedIndex] === -1) {
+    if (checkFinished(fields, states)) {
       setFinishedTime(Date.now());
     }
   };
   const handleRightClick = (clickedIndex) => {
-    if (finishedTime > 0) return;
+    if (finishedTime > 0 || states[clickedIndex] === STATE.CLEAR) {
+      return;
+    }
 
     if (states[clickedIndex] === STATE.INIT) {
-      setStates(states.map((state, index) => (
-        index === clickedIndex ? STATE.MINE : state
-      )));
-    } else if (states[clickedIndex] === STATE.MINE) {
-      setStates(states.map((state, index) => (
-        index === clickedIndex ? STATE.INIT : state
-      )));
+      states[clickedIndex] = STATE.MINE;
+    } else {
+      states[clickedIndex] = STATE.INIT;
+    }
+    setStates([...states]);
+
+    if (checkFinished(fields, states)) {
+      setFinishedTime(Date.now());
     }
   };
 
