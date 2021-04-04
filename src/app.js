@@ -1,16 +1,24 @@
 import React, { Fragment, useState } from "react";
 import { Field } from "src/components";
-import { width, height } from "src/config";
-import { generateFields, spreadSelection } from "src/utility";
+import { width } from "src/config";
+import { generateFields, generateInitStates, spreadSelection } from "src/utility";
 import { STATE } from "src/constant";
 import "./styles.scss";
 
 const App = () => {
-  const [fields] = useState(generateFields());
+  const [fields, setFields] = useState(
+    generateFields()
+  );
   const [states, setStates] = useState(
-    new Array(width * height).fill(STATE.INIT)
+    generateInitStates()
   );
   const [finished, setFinished] = useState(false);
+
+  const handleRestart = () => {
+    setFields(generateFields());
+    setStates(generateInitStates());
+    setFinished(false);
+  };
 
   const handleLeftClick = (clickedIndex) => {
     if (finished || states[clickedIndex] !== STATE.INIT) {
@@ -55,6 +63,8 @@ const App = () => {
           </Fragment>
         ))}
       </div>
+      <br />
+      <button type="button" onClick={handleRestart}> Restart </button>
     </div>
   );
 };

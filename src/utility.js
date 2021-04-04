@@ -67,6 +67,9 @@ export const generateFields = () => {
   return fields;
 };
 
+export const generateInitStates = () => new Array(width * height)
+  .fill(STATE.INIT);
+
 export const spreadSelection = (fields, states, index) => {
   states[index] = STATE.CLEAR;
   if (fields[index] !== 0) {
