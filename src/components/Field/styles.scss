@@ -5,12 +5,31 @@ $size: 16px;
   height: $size;
   display: inline-block;
   background-image: url('../../assets/sprite100.gif');
-  background-position: 0 -39px;
 
   &.finished {
     pointer-events: none;
   }
   &.init {
     background-position: 0 -39px;
+    &:active {
+      background-position: 0 -23px;
+    }
+  }
+  &.not-found-mine {
+    background-position: -64px -39px;
+  }
+  &.red-mine {
+    background-position: -32px -39px;
+  }
+  &.not-mine {
+    background-position: -48px -39px;
+  }
+  &.marked-mine {
+    background-position: -16px -39px;
+  }
+  @for $i from 0 through 8 {
+    &.number-#{$i} {
+      background-position: -$i * $size -23px;
+    }
   }
 }

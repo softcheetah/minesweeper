@@ -20,7 +20,15 @@ const Field = ({
       classNames.push(field >= 0 ? "not-mine" : "marked-mine");
     }
   } else {
-
+    if (state === STATE.INIT) {
+      classNames.push("init");
+    }
+    if (state === STATE.CLEAR) {
+      classNames.push(`number-${field}`);
+    }
+    if (state === STATE.MINE) {
+      classNames.push("marked-mine");
+    }
   }
   return (
     <div className={classNames.join(" ")} />
