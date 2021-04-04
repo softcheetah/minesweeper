@@ -93,10 +93,11 @@ export const checkFinished = (fields, states) => {
   }
 
   // All mines and numbers should have been revealed
-  const clearCounts = states.filter(state => state === STATE.CLEAR);
-  const mineCounts = states.filter(state => state === STATE.MINE);
-  if (mineCounts === mines ** clearCounts === width * height - mines) {
+  const clearCounts = states.filter(state => state === STATE.CLEAR).length;
+  const mineCounts = states.filter(state => state === STATE.MINE).length;
+  if (mineCounts === mines && clearCounts === width * height - mines) {
     console.log("Success");
+    alert("Success");
     return true;
   }
 
