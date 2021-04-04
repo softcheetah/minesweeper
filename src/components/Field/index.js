@@ -1,17 +1,17 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import React from "react";
 import PropTypes from "prop-types";
 import { STATE } from "src/constant";
 import "./styles.scss";
 
 const Field = ({
-  field, state, finished
+  field, state, finished, onLeftClick, onRightClick
 }) => {
   const classNames = ["field-div"];
-
   if (finished) {
-    classNames.push("finished");
     if (state === STATE.INIT) {
-      classNames.push(field >= 0 ? "init" : "not-found-mine");
+      classNames.push(field >= 0 ? "not-touched" : "not-found-mine");
     }
     if (state === STATE.CLEAR) {
       classNames.push(field >= 0 ? `number-${field}` : "red-mine");
@@ -30,14 +30,21 @@ const Field = ({
       classNames.push("marked-mine");
     }
   }
+
   return (
-    <div className={classNames.join(" ")} />
+    <div
+      className={classNames.join(" ")}
+      onClick={onLeftClick}
+      onContextMenu={onRightClick}
+    />
   );
 };
 Field.propTypes = {
-  field    : PropTypes.number.isRequired,
-  state    : PropTypes.string.isRequired,
-  finished : PropTypes.bool.isRequired,
+  field        : PropTypes.number.isRequired,
+  state        : PropTypes.string.isRequired,
+  finished     : PropTypes.bool.isRequired,
+  onLeftClick  : PropTypes.func.isRequired,
+  onRightClick : PropTypes.func.isRequired,
 };
 
 export default Field;

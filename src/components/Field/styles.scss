@@ -16,6 +16,9 @@ $size: 16px;
       background-position: 0 -23px;
     }
   }
+  &.not-touched {
+    background-position: 0 -39px;
+  }
   &.not-found-mine {
     background-position: -64px -39px;
   }

@@ -1,4 +1,3 @@
-/* eslint-disable react/no-array-index-key */
 import React, { useState } from "react";
 import { Field } from "src/components";
 import { width, height } from "src/config";
@@ -13,9 +12,35 @@ const App = () => {
   );
   const [finished, setFinished] = useState(false);
 
+  const handleLeftClick = (clickedIndex) => {
+    if (finished || states[clickedIndex] !== STATE.INIT) {
+      return;
+    }
+
+    setStates(states.map((state, index) => (
+      index === clickedIndex ? STATE.CLEAR : state
+    )));
+    if (fields[clickedIndex] === -1) {
+      setFinished(true);
+    }
+  };
+  const handleRightClick = (clickedIndex) => {
+    if (finished) return;
+
+    if (states[clickedIndex] === STATE.INIT) {
+      setStates(states.map((state, index) => (
+        index === clickedIndex ? STATE.MINE : state
+      )));
+    } else if (states[clickedIndex] === STATE.MINE) {
+      setStates(states.map((state, index) => (
+        index === clickedIndex ? STATE.INIT : state
+      )));
+    }
+  };
+
   return (
     <div className="App">
-      <div className="fields-container">
+      <div className="fields-container" onContextMenu={e => e.preventDefault()}>
         { fields.map((field, index) => (
           <>
             <Field
@@ -23,8 +48,10 @@ const App = () => {
               field={field}
               state={states[index]}
               finished={finished}
+              onLeftClick={() => handleLeftClick(index)}
+              onRightClick={() => handleRightClick(index)}
             />
-            {index % width === width - 1 && <div />}
+            {index % width === width - 1 && <br />}
           </>
         ))}
       </div>
