@@ -1,4 +1,3 @@
-/* eslint-disable no-param-reassign */
 import { STATE } from "src/constant";
 import { width, height, mines } from "./config";
 
@@ -71,6 +70,7 @@ export const generateInitStates = () => new Array(width * height)
   .fill(STATE.INIT);
 
 export const spreadSelection = (fields, states, index) => {
+  // eslint-disable-next-line no-param-reassign
   states[index] = STATE.CLEAR;
   if (fields[index] !== 0) {
     return;

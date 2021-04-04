@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-one-expression-per-line */
 import React, { Fragment, useEffect, useState } from "react";
 import { Field } from "src/components";
 import { mines, width } from "src/config";
